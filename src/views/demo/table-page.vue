@@ -1,37 +1,36 @@
 <template>
   <div class="demo-block">
-    <TableSearch :columns="columns" :show-index="0" @submit="handleSubmit" />
-    <pre>
-			{{ params }}
-		</pre>
+    <TablePage :search-config="sesrchConfig" />
   </div>
 </template>
 
 <script>
-import TableSearch from '@/components/TablePage/TableSearch'
+import TablePage from '@/components/TablePage'
 export default {
   components: {
-    TableSearch
+    TablePage
   },
   data() {
     return {
-      params: null,
-      columns: [
-        { prop: 'name', label: '名称', default: 'jack' },
-        { prop: 'sex', label: '性别', type: 'select', options: [], attrs: { clearable: true }},
-        { prop: 'birth', label: '生日', type: 'date' },
-        { prop: 'year', label: '年份', type: 'year' },
-        { prop: 'month', label: '月份', type: 'month' },
-        { prop: 'range', label: '日期区间', type: 'daterange', span: 16, startKey: 'startDate', endKey: 'endDate', attrs: { startPlaceholder: '开始时间' }},
-        { prop: 'timerange', label: '时间区间', type: 'datetimerange', span: 16, startKey: 'startDateTime', endKey: 'endDateTime', attrs: { startPlaceholder: '开始时间' }},
-        { prop: 'datetime', label: '时间', type: 'datetime' },
-        { prop: 'cascader', label: '级联', type: 'cascader', options: [], attrs: { clearable: true }}
-      ]
+      sesrchConfig: {
+        columns: [
+          { prop: 'name', label: '名称', default: 'jack' },
+          { prop: 'sex', label: '性别', type: 'select', options: [], attrs: { clearable: true }},
+          { prop: 'birth', label: '生日', type: 'date' },
+          { prop: 'year', label: '年份', type: 'year' },
+          { prop: 'month', label: '月份', type: 'month' },
+          { prop: 'range', label: '日期区间', type: 'daterange', span: 16, startKey: 'startDate', endKey: 'endDate', attrs: { startPlaceholder: '开始时间' }},
+          { prop: 'timerange', label: '时间区间', type: 'datetimerange', span: 16, startKey: 'startDateTime', endKey: 'endDateTime', attrs: { startPlaceholder: '开始时间' }},
+          { prop: 'datetime', label: '时间', type: 'datetime' },
+          { prop: 'cascader', label: '级联', type: 'cascader', options: [], attrs: { clearable: true }}
+        ],
+        showIndex: 0
+      }
     }
   },
   created() {
-    this.columns.find(v => v.prop === 'sex').options = [{ value: 1, label: '男' }, { value: 0, label: '女' }]
-    this.columns.find(v => v.prop === 'cascader').options = [{
+    this.sesrchConfig.columns.find(v => v.prop === 'sex').options = [{ value: 1, label: '男' }, { value: 0, label: '女' }]
+    this.sesrchConfig.columns.find(v => v.prop === 'cascader').options = [{
       value: 'zhinan',
       label: '指南',
       children: [{
@@ -69,12 +68,6 @@ export default {
         label: '组件交互文档'
       }]
     }]
-  },
-  methods: {
-    handleSubmit(data) {
-      console.log('handle submit', data)
-      this.params = data
-    }
   }
 }
 </script>

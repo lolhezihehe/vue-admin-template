@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="form" :label-width="labelWidth" class="table-search" @submit.native.prevent>
+  <el-form v-if="columns.length>0" ref="form" :model="form" :label-width="labelWidth" class="table-search" @submit.native.prevent>
     <el-row :gutter="20">
       <el-col v-for="(item, index) in columns" v-show="showIndex === 0 || index<showIndex || isExpand" :key="item.prop" :span="item.span || 8">
         <el-form-item :prop="item.prop" :label="item.label">
@@ -8,7 +8,6 @@
             v-if="item.type === 'select'"
             v-model="form[item.prop]"
             class="item-w100"
-            :placeholder="defaultAttr(item.attrs, 'placeholder', '请选择')"
             v-bind="item.attrs || {}"
           >
             <el-option
