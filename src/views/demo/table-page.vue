@@ -24,6 +24,7 @@ export default {
       sesrchConfig: {
         columns: [
           { prop: 'name', label: '名称', default: 'jack' },
+          { prop: 'address', label: '地区', type: 'city' },
           { prop: 'sex', label: '性别', type: 'select', options: [], attrs: { clearable: true }},
           { prop: 'birth', label: '生日', type: 'date' },
           { prop: 'year', label: '年份', type: 'year' },
@@ -36,8 +37,8 @@ export default {
         showIndex: 2
       },
       columns: [
-        { type: 'index', label: '序号', attrs: { width: 150 }},
-        { prop: 'title', label: '标题' },
+        { type: 'index', label: '序号', attrs: { width: 50 }},
+        { type: 'link', prop: 'title', label: '标题' },
         { prop: '_empty', label: '无内容' },
         { type: 'slot', prop: 'display_time', label: '时间' },
         { type: 'slot', prop: 'status', label: '状态' },
@@ -95,28 +96,13 @@ export default {
     }]
   },
   methods: {
-    handleButton(handle, scope) {
-      console.log('click button', handle, scope)
+    handleButton(handle, row) {
+      console.log('click button', handle, row)
       if (handle === 'edit') {
-        getRow(scope.row.id)
+        getRow(row.id)
       }
     },
-    async getList(params) {
-      const response = await getList(params)
-      const list = response.data.items.map(item => {
-        return {
-          ...item,
-          title: item.title + '-filter'
-        }
-      })
-      return {
-        ...response,
-        data: {
-          list,
-          total: list.length
-        }
-      }
-    },
+    getList,
     deleteRow
   }
 }

@@ -3,7 +3,7 @@ const Mock = require('mockjs')
 const data = Mock.mock({
   'items|30': [{
     id: '@id',
-    title: '@sentence(10, 20)',
+    title: '@ctitle(5, 10)',
     'status|1': ['published', 'draft', 'deleted'],
     author: 'name',
     display_time: '@datetime',
@@ -21,7 +21,7 @@ module.exports = [
         code: 20000,
         data: {
           total: items.length,
-          items: items
+          list: items
         },
         success: 'list success'
       }

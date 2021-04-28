@@ -1,11 +1,19 @@
 <template>
   <el-form v-if="columns.length>0" ref="form" :model="form" :label-width="labelWidth" class="table-search" @submit.native.prevent>
     <el-row :gutter="20">
-      <el-col v-for="(item, index) in columns" v-show="showIndex === 0 || index<showIndex || isExpand" :key="item.prop" :span="item.span || 8">
+      <el-col v-for="(item, index) in columns" v-show="showIndex === 0 || index<showIndex || isExpand" :key="item.prop" :span="item.span || span">
         <el-form-item :prop="item.prop" :label="item.label">
+          <!-- city -->
+          <city-picker
+            v-if="item.type === 'city'"
+            v-model="form[item.prop]"
+            class="item-w100"
+            v-bind="item.attrs || {}"
+          />
+
           <!-- select -->
           <el-select
-            v-if="item.type === 'select'"
+            v-else-if="item.type === 'select'"
             v-model="form[item.prop]"
             class="item-w100"
             v-bind="item.attrs || {}"
@@ -113,7 +121,7 @@
 
       <el-col :span="8" :lg="6">
         <el-form-item label-width="0">
-          <el-button type="primary" @click="submit">查询</el-button>
+          <el-button type="primary" @click="search">查询</el-button>
           <el-button v-if="showReset" @click="reset">重置</el-button>
           <el-button v-if="showIndex !== 0 && (columns.length > showIndex)" type="text" @click="isExpand = !isExpand">
             <span v-if="!isExpand">展开<i class="el-icon-arrow-down" /></span>
@@ -127,8 +135,12 @@
 </template>
 
 <script>
+import CityPicker from '@/components/CityPicker'
 export default {
   name: 'TableSearch',
+  components: {
+    CityPicker
+  },
   props: {
     /**
      * 配置项数据
@@ -161,6 +173,14 @@ export default {
     labelWidth: {
       type: String,
       default: '5em'
+    },
+
+    /**
+     * el-col span
+     */
+    span: {
+      type: Number,
+      default: 8
     }
   },
   data() {
@@ -195,7 +215,7 @@ export default {
       if (attrs && Object.prototype.hasOwnProperty.call(attrs, key)) return attrs[key]
       return defaultValue
     },
-    submit() {
+    search() {
       // el-date range选择之后的值为array, 这里直接取 开始时间 和 结束时间（通过startKey和endKey 传参数字段）
       const rangeForm = {}
       this.rangeColumns.forEach(item => {
@@ -213,7 +233,7 @@ export default {
         }
       })
 
-      this.$emit('submit', { ...this.form, ...rangeForm })
+      this.$emit('search', { ...this.form, ...rangeForm })
     },
     reset() {
       this.$refs.form.resetFields()
@@ -224,9 +244,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-search {
-  position: relative;
-}
 .item-w100 {
   width: 100%;
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="table-page">
-    <TableSearch v-bind="searchConfig" @submit="handleSubmit" />
+    <TableSearch v-bind="searchConfig" @search="handleSearch" />
     <el-table :data="list" border stripe highlight-current-row v-bind="$attrs" v-on="$listeners">
       <template v-for="column in columns">
         <!-- expand -->
@@ -23,6 +23,19 @@
           type="selection"
           v-bind="column.attrs"
         />
+
+        <!-- link -->
+        <el-table-column
+          v-else-if="column.type === 'link'"
+          :key="column.prop"
+          :prop="column.prop"
+          :label="column.label"
+          v-bind="column.attrs"
+        >
+          <template v-slot="scope">
+            <el-link type="primary">{{ scope.row[column.prop] }}</el-link>
+          </template>
+        </el-table-column>
 
         <!-- slot -->
         <el-table-column
@@ -50,7 +63,7 @@
               :key="btn.handle"
               :type="btn.type"
               size="mini"
-              @click="handleButton(btn.handle, scope)"
+              @click="handleButton(btn.handle, scope.row)"
             >{{ btn.label }}</el-button>
           </template>
         </el-table-column>
@@ -216,14 +229,14 @@ export default {
     indexMethod(index) {
       return (this.currentPage - 1) * this.pageSize + index + 1
     },
-    handleSubmit(data) {
+    handleSearch(data) {
       this.searchParams = data
       this.getList()
     },
-    handleButton(handle, scope) {
-      this.$emit('handleButton', handle, scope)
+    handleButton(handle, row) {
+      this.$emit('handleButton', handle, row)
       if (handle === 'delete' && typeof this.listMethod === 'function') {
-        this.handleDelete(scope.row)
+        this.handleDelete(row)
       }
     },
     handleDelete(row) {
