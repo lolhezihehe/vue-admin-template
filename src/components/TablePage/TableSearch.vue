@@ -1,7 +1,7 @@
 <template>
-  <el-form v-if="columns.length>0" ref="form" :model="form" :label-width="labelWidth" class="table-search" @submit.native.prevent>
+  <el-form v-if="permissionColumns.length>0" ref="form" :model="form" :label-width="labelWidth" class="table-search" @submit.native.prevent>
     <el-row :gutter="20">
-      <el-col v-for="(item, index) in columns" v-show="showIndex === 0 || index<showIndex || isExpand" :key="item.prop" :span="item.span || span">
+      <el-col v-for="(item, index) in permissionColumns" v-show="showIndex === 0 || index<showIndex || isExpand" :key="item.prop" :span="item.span || span">
         <el-form-item :prop="item.prop" :label="item.label">
           <!-- city -->
           <city-picker
@@ -135,6 +135,7 @@
 </template>
 
 <script>
+import checkPermission from '@/utils/permission'
 import CityPicker from '@/components/CityPicker'
 export default {
   name: 'TableSearch',
@@ -190,6 +191,14 @@ export default {
     }
   },
   computed: {
+    /**
+     * 过滤没有权限的选项
+     */
+    permissionColumns() {
+      return this.columns.filter(item => {
+        return !item.roles || checkPermission(item.roles)
+      })
+    },
     rangeColumns() {
       return this.columns.filter(v => {
         return v.type === 'daterange' || v.type === 'datetimerange'

@@ -7,6 +7,8 @@ const data = Mock.mock({
     'status|1': ['published', 'draft', 'deleted'],
     author: 'name',
     display_time: '@datetime',
+    start_date: '@date("yyyy-MM-dd")',
+    end_date: '@date("yyyy-MM-dd")',
     pageviews: '@integer(300, 5000)'
   }]
 })

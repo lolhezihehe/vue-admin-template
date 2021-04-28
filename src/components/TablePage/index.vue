@@ -2,7 +2,7 @@
   <div class="table-page">
     <TableSearch v-bind="searchConfig" @search="handleSearch" />
     <el-table :data="list" border stripe highlight-current-row v-bind="$attrs" v-on="$listeners">
-      <template v-for="column in columns">
+      <template v-for="column in permissionColumns">
         <!-- expand -->
         <el-table-column v-if="column.type === 'expand'" :key="'_' + column.type" type="expand" v-bind="column.attrs" />
 
@@ -59,7 +59,7 @@
         >
           <template v-slot="scope">
             <el-button
-              v-for="btn in column.buttons"
+              v-for="btn in filterPermission(column.buttons)"
               :key="btn.handle"
               :type="btn.type"
               size="mini"
@@ -91,6 +91,7 @@
 </template>
 
 <script>
+import checkPermission from '@/utils/permission'
 import TableSearch from './TableSearch'
 import _get from 'lodash/get'
 function isEmpty(value) {
@@ -199,6 +200,14 @@ export default {
     }
   },
   computed: {
+    /**
+     * 过滤没有权限的选项
+     */
+    permissionColumns() {
+      return this.columns.filter(item => {
+        return !item.roles || checkPermission(item.roles)
+      })
+    },
     params() {
       return {
         page: this.pagination ? this.currentPage : undefined,
@@ -212,6 +221,14 @@ export default {
     this.getList()
   },
   methods: {
+    /**
+     * 过滤没有权限的按钮
+     */
+    filterPermission(buttons) {
+      return buttons.filter(btn => {
+        return !btn.roles || checkPermission(btn.roles)
+      })
+    },
     getList() {
       if (typeof this.listMethod === 'function') {
         const p = Promise.resolve(this.listMethod(this.params))
@@ -257,5 +274,6 @@ export default {
 }
 .table-pagination {
   text-align: right;
+  padding: 20px 0 0;
 }
 </style>

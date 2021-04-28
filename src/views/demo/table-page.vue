@@ -4,9 +4,6 @@
       <template v-slot:status="{ row }">
         <span :class="{ red: row.status === 'deleted' }">{{ row.status }}</span>
       </template>
-      <template v-slot:display_time="{ row }">
-        <span>{{ row.display_time }}</span>
-      </template>
     </TablePage>
   </div>
 </template>
@@ -24,7 +21,8 @@ export default {
       sesrchConfig: {
         columns: [
           { prop: 'name', label: '名称', default: 'jack' },
-          { prop: 'address', label: '地区', type: 'city' },
+          { prop: 'address', label: '地区', type: 'city', roles: ['TABLE_CITY'] },
+          { prop: 'no-roles', label: '地区', type: 'city', roles: ['NO_ROLES'] },
           { prop: 'sex', label: '性别', type: 'select', options: [], attrs: { clearable: true }},
           { prop: 'birth', label: '生日', type: 'date' },
           { prop: 'year', label: '年份', type: 'year' },
@@ -40,15 +38,18 @@ export default {
         { type: 'index', label: '序号', attrs: { width: 50 }},
         { type: 'link', prop: 'title', label: '标题' },
         { prop: '_empty', label: '无内容' },
-        { type: 'slot', prop: 'display_time', label: '时间' },
+        { prop: 'start_date', label: '开始', roles: ['NO_ROLES'] },
+        { prop: 'end_date', label: '结束', roles: ['TABLE_EDIT'] },
         { type: 'slot', prop: 'status', label: '状态' },
         {
           type: 'button',
           prop: 'button',
           label: '操作',
           buttons: [
-            { handle: 'edit', label: 'edit', type: 'primary' },
-            { handle: 'delete', label: 'delete' }
+            { handle: 'role', label: 'role', roles: ['NO_ROLES'] },
+            { handle: 'detail', label: 'detail', roles: ['TABLE_DETAIL'] },
+            { handle: 'edit', label: 'edit', type: 'primary', roles: ['TABLE_EDIT'] },
+            { handle: 'delete', label: 'delete', roles: ['TABLE_DELETE'] }
           ]
         }
       ]
