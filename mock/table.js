@@ -22,7 +22,30 @@ module.exports = [
         data: {
           total: items.length,
           items: items
-        }
+        },
+        success: 'list success'
+      }
+    }
+  },
+  {
+    url: '/vue-admin-template/table/index',
+    type: 'get',
+    response: config => {
+      return {
+        code: 20000,
+        data: {},
+        message: 'index success'
+      }
+    }
+  },
+  {
+    url: '/vue-admin-template/table/delete',
+    type: 'delete',
+    response: config => {
+      return {
+        code: 20000,
+        data: {},
+        message: 'delete success'
       }
     }
   }

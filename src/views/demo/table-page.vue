@@ -1,17 +1,26 @@
 <template>
   <div class="demo-block">
-    <TablePage :search-config="sesrchConfig" />
+    <TablePage :search-config="sesrchConfig" :columns="columns" :list-method="getList" :delete-method="deleteRow" @handleButton="handleButton">
+      <template v-slot:status="{ row }">
+        <span :class="{ red: row.status === 'deleted' }">{{ row.status }}</span>
+      </template>
+      <template v-slot:display_time="{ row }">
+        <span>{{ row.display_time }}</span>
+      </template>
+    </TablePage>
   </div>
 </template>
 
 <script>
 import TablePage from '@/components/TablePage'
+import { getList, getRow, deleteRow } from '@/api/table'
 export default {
   components: {
     TablePage
   },
   data() {
     return {
+      TIME: [],
       sesrchConfig: {
         columns: [
           { prop: 'name', label: '名称', default: 'jack' },
@@ -24,8 +33,24 @@ export default {
           { prop: 'datetime', label: '时间', type: 'datetime' },
           { prop: 'cascader', label: '级联', type: 'cascader', options: [], attrs: { clearable: true }}
         ],
-        showIndex: 0
-      }
+        showIndex: 2
+      },
+      columns: [
+        { type: 'index', label: '序号', attrs: { width: 150 }},
+        { prop: 'title', label: '标题' },
+        { prop: '_empty', label: '无内容' },
+        { type: 'slot', prop: 'display_time', label: '时间' },
+        { type: 'slot', prop: 'status', label: '状态' },
+        {
+          type: 'button',
+          prop: 'button',
+          label: '操作',
+          buttons: [
+            { handle: 'edit', label: 'edit', type: 'primary' },
+            { handle: 'delete', label: 'delete' }
+          ]
+        }
+      ]
     }
   },
   created() {
@@ -68,14 +93,42 @@ export default {
         label: '组件交互文档'
       }]
     }]
+  },
+  methods: {
+    handleButton(handle, scope) {
+      console.log('click button', handle, scope)
+      if (handle === 'edit') {
+        getRow(scope.row.id)
+      }
+    },
+    async getList(params) {
+      const response = await getList(params)
+      const list = response.data.items.map(item => {
+        return {
+          ...item,
+          title: item.title + '-filter'
+        }
+      })
+      return {
+        ...response,
+        data: {
+          list,
+          total: list.length
+        }
+      }
+    },
+    deleteRow
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.demo-block{
-	position: relative;
-	padding: 30px;
-	background: #fff;
+.demo-block {
+  position: relative;
+  padding: 30px;
+  background: #fff;
+}
+.red {
+  color: red;
 }
 </style>
