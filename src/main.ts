@@ -7,7 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import '@/styles/index.scss' // global css
 
-import App from './App'
+import App from './App.vue'
 import store from './store'
 import router from './router'
 
@@ -15,6 +15,7 @@ import '@/icons' // icon
 import '@/permission' // permission control
 
 // v-permission
+// @ts-ignore
 import permission from '@/directives/permission'
 Vue.use(permission)
 

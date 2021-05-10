@@ -1,19 +1,35 @@
 module.exports = {
   root: true,
-  parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module'
-  },
   env: {
-    browser: true,
-    node: true,
-    es6: true,
+    node: true
   },
-  extends: ['plugin:vue/recommended', 'eslint:recommended'],
-
-  // add your custom rules here
-  //it is base on https://github.com/vuejs/eslint-config-vue
+  extends: [
+    'plugin:vue/essential',
+    'eslint:recommended',
+    '@vue/typescript/recommended'
+  ],
+  parserOptions: {
+    ecmaVersion: 2020
+  },
   rules: {
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/member-delimiter-style': ['error',
+      {
+        multiline: {
+          delimiter: 'none'
+        },
+        singleline: {
+          delimiter: 'comma'
+        }
+    }],
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'space-before-function-paren': ['error', 'never'],
     "vue/max-attributes-per-line": [2, {
       "singleline": 10,
       "multiline": {
@@ -194,5 +210,16 @@ module.exports = {
       objectsInObjects: false
     }],
     'array-bracket-spacing': [2, 'never']
-  }
+  },
+  overrides: [
+    {
+      files: [
+        '**/__tests__/*.{j,t}s?(x)',
+        '**/tests/unit/**/*.spec.{j,t}s?(x)'
+      ],
+      env: {
+        jest: true
+      }
+    }
+  ]
 }
