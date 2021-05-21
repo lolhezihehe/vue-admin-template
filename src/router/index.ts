@@ -40,7 +40,12 @@ export const constantRoutes = [
       {
         path: 'table-page',
         component: () => import('@/views/demo/table-page.vue'),
-        meta: { title: 'table-page', icon: 'table' }
+        meta: { title: 'table-page' }
+      },
+      {
+        path: 'pinyin-scroll',
+        component: () => import('@/views/demo/pinyin-scroll.vue'),
+        meta: { title: 'pinyin-scroll' }
       }
     ]
   },
