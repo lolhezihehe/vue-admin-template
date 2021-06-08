@@ -86,6 +86,8 @@ export default {
       }).sort((a, b) => {
         if (a.letter === '#') {
           return b.letter === '#' ? 0 : 1
+        } else if (b.letter === '#') {
+          return -1
         } else {
           return a.letter < b.letter ? -1 : a.letter > b.letter ? 1 : 0
         }
