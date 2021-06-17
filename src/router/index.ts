@@ -46,6 +46,11 @@ export const constantRoutes = [
         path: 'pinyin-scroll',
         component: () => import('@/views/demo/pinyin-scroll.vue'),
         meta: { title: 'pinyin-scroll' }
+      },
+      {
+        path: 'amap',
+        component: () => import('@/views/demo/amap.vue'),
+        meta: { title: 'amap' }
       }
     ]
   },

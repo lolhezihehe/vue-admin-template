@@ -119,5 +119,8 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
-  }
+  },
+  transpileDependencies: [
+    'amap-vue'
+  ]
 }

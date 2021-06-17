@@ -14,6 +14,10 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// 高德地图
+import AmapVueConfig from '@amap/amap-vue/lib/config'
+AmapVueConfig.key = 'bf5f95b469fa8b34cfe40420607fb916'
+
 // v-permission
 // @ts-ignore
 import permission from '@/directives/permission'
